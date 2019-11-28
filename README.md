@@ -2,6 +2,12 @@
 
 Learn basics of node js from https://www.w3schools.com/nodejs/default.asp
 
+## Callbacks 
+
+* simplest possible mechanism for handling asynchronous code in JavaScript
+* A function that does something asynchronously should provide a callback argument where we put the function to run after it’s complete.
+
+
 ## Promises
 
 * Enhancement for callbacks in node js
@@ -18,6 +24,7 @@ p.catch(logError);
 ```
 * Key aspect of promise is return value ( No concept of return value in call backs) - Return value gives more control over how the call back should be defined
 * Promise will be in pening state when trying to access before it is resolved or rejected.
+* promises mimic try/catch semantics
 ```
 var myPromise = new Promise(function(resolve, reject){
    ....
@@ -93,7 +100,7 @@ var initializePromise = initialize();
         console.log(userDetails)
         //nested promise best to use
          var anotherPromise = getData(userDetails.followers_url).then(JSON.parse);
-         return anotherPromise;
+         return anotherPromise; // If you return a promise, it will signal the next then when the asynchronous operation completes. You can also return any other value and the next onFulfilled will get the value as an argument
     }, function(err) {
         console.log(err);
     }).then(function(result) {
