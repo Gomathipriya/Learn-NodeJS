@@ -7,15 +7,63 @@ Learn basics of node js from https://www.w3schools.com/nodejs/default.asp
 * Enhancement for callbacks in node js
 * A Promise is a value returned by an asynchronous function to indicate the completion of the process
 * To take care of callback hell (nested callbacks)
+* Incase of action fullfilled promise gets resolved, incase of denial promise gets rejected.
 ```
 var promise = doSomethingAync()
 promise.then(onFulfilled, onRejected)
 ```
 * Key aspect of promise is return value ( No concept of return value in call backs) - Return value gives more control over how the call back should be defined
+* Promise will be in pening state when trying to access before it is resolved or rejected.
+```
+var myPromise = new Promise(function(resolve, reject){
+   ....
+})
+
+var userDetails;
+function initialize() {
+    // Setting URL and headers for request
+    var options = {
+        url: 'https://api.github.com/users/narenaryan',
+        headers: {
+            'User-Agent': 'request'
+        }
+    };
+    // Return new promise 
+    return new Promise(function(resolve, reject) {
+     // Do async job
+        request.get(options, function(err, resp, body) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(JSON.parse(body));
+            }
+        })
+    })
+}
+```
+* Promise.all function which takes a list of promises in the given order and returns another promise which we can use a then method to conclude the logic
+
 
 #### Nested Promise
 
 * Then method itelf returns a promise - helps in nested promise or chaining (linking execution of methods to one another) 
+
+```
+var initializePromise = initialize();
+    initializePromise.then(function(result) {
+        userDetails = result;
+        console.log("Initialized user details");
+        console.log(userDetails)
+        //nested promise best to use
+         var anotherPromise = getData(userDetails.followers_url).then(JSON.parse);
+         return anotherPromise;
+    }, function(err) {
+        console.log(err);
+    }).then(function(result) {
+        // nested promise ( Not a best practise)
+        console.log(result.public_gists + result.public_repos);
+    })
+```
 
 #### Custom Promise
 
