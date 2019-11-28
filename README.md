@@ -150,4 +150,66 @@ var aPromise = new Promise(function(resolve, reject) {
 2. <strong> Fulfilled </strong> - When and if the final value becomes available
 3. <strong> Rejected </strong> - if an error prevents final value from being determined
 
+## async-await
 
+* extensions of promises
+* Async functions - operates asynchronously via the event-loop
+* Async functions will always return a value
+
+```
+async function firstAsync() {
+  return 27;
+}
+
+firstAsync().then(alert); // 27
+```
+
+* The await operator is used to wait for a Promise
+* await operator - used inside an Async block only -  it only makes the async function block wait and not the whole program execution
+
+```
+async function firstAsync() {
+    let promise = new Promise((res, rej) => {
+        setTimeout(() => res("Now it's done!"), 1000)
+    });
+
+    // wait until the promise returns us a value
+    let result = await promise; 
+  
+    // "Now it's done!"
+    alert(result); 
+    }
+};
+firstAsync();
+```
+
+* We can’t use the await keyword inside of regular functions.
+* Async Await makes execution sequential
+
+```
+async function sequence() {
+  await promise1(50); // Wait 50ms…
+  await promise2(50); // …then wait another 50ms.
+  return "done!";
+}
+
+async function sequence() {
+    await Promise.all([promise1(), promise2()]);  
+    return "done!";
+}
+
+async function parallel() {
+    // Start a 500ms timer asynchronously…
+    const wait1 = promise1(50); 
+    // …meaning this timer happens in parallel.
+    const wait2 = promise2(50); 
+  
+    // Wait 50ms for the first timer…
+    await wait1; 
+    
+    // …by which time this timer has already finished.
+    await wait2; 
+  
+    return "done!";
+}
+```
