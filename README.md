@@ -11,6 +11,10 @@ Learn basics of node js from https://www.w3schools.com/nodejs/default.asp
 ```
 var promise = doSomethingAync()
 promise.then(onFulfilled, onRejected)
+
+p.then(undefined, logError);
+p.catch(logError);
+//above both are identical
 ```
 * Key aspect of promise is return value ( No concept of return value in call backs) - Return value gives more control over how the call back should be defined
 * Promise will be in pening state when trying to access before it is resolved or rejected.
@@ -43,6 +47,39 @@ function initialize() {
 ```
 * Promise.all function which takes a list of promises in the given order and returns another promise which we can use a then method to conclude the logic
 
+```
+var message = "";
+
+promise1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        message += "my";
+        resolve(message);
+    }, 2000)
+})
+
+promise2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        message += " first";
+        resolve(message);
+    }, 2000)
+})
+
+var printResult = (results) => {console.log("Results = ", results, "message = ", message)}
+
+function main() {
+    // See the order of promises. Final result will be according to it
+    Promise.all([promise1, promise2]).then(printResult);
+    Promise.all([promise2, promise1]).then(printResult);
+    console.log("\"\"" + message);
+}
+
+main();
+
+""
+Results = ["my" , "my first"];
+Results = ["my first", "my]
+```
+* Promise.all fails if any one of the Promise got rejected. It is an and operation between promise fulfillments
 
 #### Nested Promise
 
@@ -88,3 +125,11 @@ promise.then(
   }
 )
 ```
+
+### 3 state of promise
+
+1. <strong> Pending </strong>- When the final value is not availabe yet
+2. <strong> Fulfilled </strong> - When and if the final value becomes available
+3. <strong> Rejected </strong> - if an error prevents final value from being determined
+
+
