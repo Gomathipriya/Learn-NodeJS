@@ -213,3 +213,39 @@ async function parallel() {
     return "done!";
 }
 ```
+
+* Async/Await was created to simplify the process of working with and writing chained promises.
+* Difference between promise and async-await
+
+```
+
+const makeRequest = () =>
+  getJSON()
+    .then(data => {
+      console.log(data)
+      return "done"
+    })
+
+makeRequest()
+
+const makeRequest = async () => {
+  console.log(await getJSON())
+  return "done"
+}
+
+makeRequest()
+```
+
+* Best practice
+
+```
+const makeRequest = async () => {
+  try {
+    // this parse may fail
+    const data = JSON.parse(await getJSON())
+    console.log(data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+```
